@@ -1,4 +1,8 @@
 
+using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Persistence.Data;
+
 namespace FoodCourt
 {
     public class Program
@@ -13,6 +17,12 @@ namespace FoodCourt
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddDbContext<FoodCourtDbContext>((optionsbuilder =>
+            {
+                optionsbuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+
+            }));
 
             var app = builder.Build();
 

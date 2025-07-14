@@ -21,7 +21,7 @@ namespace Persistence.Data
         #region DbSets
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductBrand> ProductBrands { get; set; }
-        public DbSet<Category> ProductTypes { get; set; }
+        public DbSet<Category> Categories { get; set; }
         #endregion
     }
 }

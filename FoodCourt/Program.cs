@@ -1,4 +1,7 @@
 
+using Application.Contracts;
+using Application.Services;
+using Domain.Contracts;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Data;
@@ -23,6 +26,9 @@ namespace FoodCourt
                 optionsbuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 
             }));
+            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
+
 
             var app = builder.Build();
 

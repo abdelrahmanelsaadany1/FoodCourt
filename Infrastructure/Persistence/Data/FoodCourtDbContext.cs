@@ -19,9 +19,21 @@ namespace Persistence.Data
         }
 
         #region DbSets
-        public DbSet<Product> Products { get; set; }
-        public DbSet<ProductBrand> ProductBrands { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Restaurant> Restaurants { get; set; }
+        public DbSet<Item> Items { get; set; }
+        public DbSet<AddOn> AddOns { get; set; }
+        public DbSet<Combo> Combos { get; set; }
+        public DbSet<ItemAddOn> ItemAddOns { get; set; }
+        public DbSet<ItemCombo> ItemCombos { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<OrderItemAddOn> OrderItemAddOns { get; set; }
+        public DbSet<OrderItemCombo> OrderItemCombos { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+       
+        public DbSet<DeliveryRate> DeliveryRates { get; set; }
+
         #endregion
     }
 }

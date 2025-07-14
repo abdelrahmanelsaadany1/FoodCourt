@@ -25,7 +25,7 @@ namespace Persistence.Data
                 .HasForeignKey<Adress>(a => a.UserId);
         }
         #region DbSets
-        public DbSet<User> Users { get; set; }
+       // public DbSet<User> Users { get; set; }
         public DbSet<Adress> Adresses { get; set; }
       
         #endregion

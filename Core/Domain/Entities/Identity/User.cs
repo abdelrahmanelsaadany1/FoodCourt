@@ -11,5 +11,12 @@ namespace Domain.Entities.Identity
     {
        public string DisplayName {  get; set; }
         public Adress Adress { get; set; }
+
+
+        // For Chefs
+        public virtual Restaurant Restaurant { get; set; }
+
+        // For Clients
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

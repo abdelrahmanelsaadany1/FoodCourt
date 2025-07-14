@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class ProductBrand : BaseEntity
+    public class DeliveryRate:BaseEntity
     {
-        public string Name { get; set; }
+      
+        public decimal RatePerKm {  get; set; }
+        
+
     }
 }

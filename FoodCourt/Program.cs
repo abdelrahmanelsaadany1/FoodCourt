@@ -26,6 +26,12 @@ namespace FoodCourt
                 optionsbuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 
             }));
+            builder.Services.AddDbContext<IdentityContext>((optionsbuilder =>
+            {
+                optionsbuilder.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection"));
+
+            }));
+
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped<ICategoryService, CategoryService>();
 

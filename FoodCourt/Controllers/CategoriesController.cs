@@ -1,7 +1,8 @@
-﻿using Application.Contracts;
+﻿
+using Domain.Dtos;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+using Persistence.Data; // <-- your DbContext namespace
 
 namespace WebApi.Controllers
 {
@@ -9,17 +10,26 @@ namespace WebApi.Controllers
     [Route("api/[controller]")]
     public class CategoriesController : ControllerBase
     {
-        private readonly ICategoryService _categoryService;
+        private readonly FoodCourtDbContext _context;
 
-        public CategoriesController(ICategoryService categoryService)
+        public CategoriesController(FoodCourtDbContext context)
         {
-            _categoryService = categoryService;
+            _context = context;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(Category category)
+        public async Task<IActionResult> Post([FromBody] CategoryCreateDto dto)
         {
-            await _categoryService.AddCategoryAsync(category);
+            // Map DTO to Entity
+            var category = new Category
+            {
+                Name = dto.Name,
+                Items = new HashSet<Item>() // optional: initialize to avoid null issues
+            };
+
+            _context.Categories.Add(category);
+            await _context.SaveChangesAsync();
+
             return Ok("Category added successfully!");
         }
     }

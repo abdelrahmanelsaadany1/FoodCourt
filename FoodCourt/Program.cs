@@ -1,4 +1,4 @@
-
+﻿
 using Application.Contracts;
 using Application.Services;
 using Domain.Contracts;
@@ -51,7 +51,7 @@ namespace FoodCourt
 
             app.UseAuthorization();
 
-            app.MapGet("/", () => "FoodCourt API is up and running!");
+            app.MapGet("/", () => "✅ FoodCourt API — VERSION 1.2 ✅");
             app.MapControllers();
 
             app.Run();

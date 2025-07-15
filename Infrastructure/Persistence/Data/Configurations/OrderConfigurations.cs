@@ -13,18 +13,25 @@ namespace Persistence.Data.Configurations
         public void Configure(EntityTypeBuilder<Order> builder)
         {
             builder
-                .HasOne(o => o.Client)
-                .WithMany(u => u.Orders)
-                .HasForeignKey(o => o.ClientId)
-                .OnDelete(DeleteBehavior.Restrict);
+        .HasOne(o => o.Client)
+        .WithMany(u => u.Orders)
+        .HasForeignKey(o => o.ClientId)
+        .OnDelete(DeleteBehavior.Restrict);
+
             builder
                 .HasOne(o => o.Restaurant)
                 .WithMany(r => r.Orders)
                 .HasForeignKey(o => o.RestaurantId)
                 .OnDelete(DeleteBehavior.Cascade);
+
             builder
                 .Property(o => o.Status)
                 .HasConversion<string>();
+
+            builder
+                .HasOne(o => o.Payment)
+                .WithOne(p => p.Order)
+                .HasForeignKey<Payment>(p => p.OrderId);
 
         }
     }

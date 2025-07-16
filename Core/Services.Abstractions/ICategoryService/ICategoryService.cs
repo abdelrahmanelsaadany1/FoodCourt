@@ -1,7 +1,7 @@
 ﻿using Domain.Entities;
 using System.Threading.Tasks;
 
-namespace Application.Contracts
+namespace Services.Abstractions.ICategoryService
 {
     public interface ICategoryService
     {

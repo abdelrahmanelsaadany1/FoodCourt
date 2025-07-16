@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities.Identity
 {
-    public class Adress
+    public class Address
     {
         public int Id { get; set; } 
         public string FName { get; set; }

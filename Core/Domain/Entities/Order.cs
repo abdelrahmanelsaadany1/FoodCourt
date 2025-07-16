@@ -20,8 +20,8 @@ namespace Domain.Entities
         public double DistanceKm { get; set; }
         
 
-        public string ClientId { get; set; }
-        public virtual User Client { get; set; }
+        public string CustomerId { get; set; }
+        public virtual User Customer { get; set; }
 
         public int RestaurantId { get; set; }
         public virtual Restaurant Restaurant { get; set; }

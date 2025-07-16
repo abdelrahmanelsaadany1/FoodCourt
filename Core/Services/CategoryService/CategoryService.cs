@@ -1,11 +1,11 @@
-﻿using Application.Contracts;
-using Domain.Contracts;
+﻿using Domain.Contracts;
 using Domain.Entities;
+using Services.Abstractions.ICategoryService;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Application.Services
+namespace Services.CategoryService
 {
     public class CategoryService : ICategoryService
     {
@@ -28,6 +28,8 @@ namespace Application.Services
             await _categoryRepository.AddAsync(category);
             await _categoryRepository.SaveChangesAsync();
         }
+
+       
     }
 }
 

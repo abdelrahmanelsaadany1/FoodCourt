@@ -10,13 +10,14 @@ namespace Domain.Entities.Identity
     public class User:IdentityUser
     {
        public string DisplayName {  get; set; }
-        public Adress Adress { get; set; }
+        public Address Adress { get; set; }
 
 
         // For Chefs
-        public virtual Restaurant Restaurant { get; set; }
+        //public virtual Restaurant Restaurant { get; set; }
 
-        // For Clients
-        public virtual ICollection<Order> Orders { get; set; }
+        //// For Clients
+        //public virtual ICollection<Order> Orders { get; set; }
     }
+
 }

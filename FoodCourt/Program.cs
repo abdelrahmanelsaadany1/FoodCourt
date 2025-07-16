@@ -1,10 +1,9 @@
-﻿
-using Application.Contracts;
-using Application.Services;
-using Domain.Contracts;
+﻿using Domain.Contracts;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Data;
+using Services.Abstractions.ICategoryService;
+using Services.CategoryService;
 
 namespace FoodCourt
 {
@@ -51,7 +50,7 @@ namespace FoodCourt
 
             app.UseAuthorization();
 
-            app.MapGet("/", () => "✅ FoodCourt API — VERSION 1.2 ✅");
+            app.MapGet("/", () => "✅ FoodCourt API — VERSION 1.3 ✅");
             app.MapControllers();
 
             app.Run();

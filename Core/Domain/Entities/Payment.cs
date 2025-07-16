@@ -12,6 +12,7 @@ namespace Domain.Entities
         public string StripePaymentIntentId { get; set; }
         public decimal Amount { get; set; }
         public DateTime PaidAt { get; set; }
+        public int OrderId { get; set; }
         public virtual Order Order { get; set; }
 
     }

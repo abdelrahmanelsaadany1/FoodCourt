@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.Data;
 
@@ -11,9 +12,11 @@ using Persistence.Data;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(FoodCourtDbContext))]
-    partial class FoodCourtDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250715195532_test deploy")]
+    partial class testdeploy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,7 +98,7 @@ namespace Persistence.Migrations
                     b.ToTable("DeliveryRates");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Identity.Address", b =>
+            modelBuilder.Entity("Domain.Entities.Identity.Adress", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -140,7 +143,7 @@ namespace Persistence.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Address");
+                    b.ToTable("Adress");
                 });
 
             modelBuilder.Entity("Domain.Entities.Identity.User", b =>
@@ -281,12 +284,12 @@ namespace Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CustomerId")
+                    b.Property<string>("ClientId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("DeliveryFee")
                         .HasColumnType("decimal(18,2)");
@@ -309,7 +312,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("ClientId");
 
                     b.HasIndex("RestaurantId");
 
@@ -430,16 +433,17 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ChefId");
+                    b.HasIndex("ChefId")
+                        .IsUnique();
 
                     b.ToTable("Restaurants");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Identity.Address", b =>
+            modelBuilder.Entity("Domain.Entities.Identity.Adress", b =>
                 {
                     b.HasOne("Domain.Entities.Identity.User", "User")
                         .WithOne("Adress")
-                        .HasForeignKey("Domain.Entities.Identity.Address", "UserId")
+                        .HasForeignKey("Domain.Entities.Identity.Adress", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -505,9 +509,9 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Order", b =>
                 {
-                    b.HasOne("Domain.Entities.Identity.User", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
+                    b.HasOne("Domain.Entities.Identity.User", "Client")
+                        .WithMany("Orders")
+                        .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -517,7 +521,7 @@ namespace Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
+                    b.Navigation("Client");
 
                     b.Navigation("Restaurant");
                 });
@@ -593,8 +597,8 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.Restaurant", b =>
                 {
                     b.HasOne("Domain.Entities.Identity.User", "Chef")
-                        .WithMany()
-                        .HasForeignKey("ChefId")
+                        .WithOne("Restaurant")
+                        .HasForeignKey("Domain.Entities.Restaurant", "ChefId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -623,6 +627,11 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.Identity.User", b =>
                 {
                     b.Navigation("Adress")
+                        .IsRequired();
+
+                    b.Navigation("Orders");
+
+                    b.Navigation("Restaurant")
                         .IsRequired();
                 });
 

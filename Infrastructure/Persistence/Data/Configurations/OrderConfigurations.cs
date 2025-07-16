@@ -1,10 +1,6 @@
 ﻿using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Persistence.Data.Configurations
 {
@@ -12,20 +8,30 @@ namespace Persistence.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Order> builder)
         {
+            // ✅ Configure Client (User) relationship — no nav in User
             builder
-                .HasOne(o => o.Client)
-                .WithMany(u => u.Orders)
-                .HasForeignKey(o => o.ClientId)
+                .HasOne(o => o.Customer)
+                .WithMany() // ← no nav back in User
+                .HasForeignKey(o => o.CustomerId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // ✅ Configure Restaurant relationship
             builder
                 .HasOne(o => o.Restaurant)
                 .WithMany(r => r.Orders)
                 .HasForeignKey(o => o.RestaurantId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // ✅ Convert Enum to string
             builder
                 .Property(o => o.Status)
                 .HasConversion<string>();
 
+            // ✅ Configure 1-1 with Payment
+            builder
+                .HasOne(o => o.Payment)
+                .WithOne(p => p.Order)
+                .HasForeignKey<Payment>(p => p.OrderId);
         }
     }
 }

@@ -22,11 +22,10 @@ namespace Persistence.Data
         public async Task InitializerIdentityAsync()
         {
             // ✅ 1) Apply pending migrations
-           
+            await _identityContext.Database.MigrateAsync();
 
             // ✅ 2) Create Roles if they don't exist
             string[] roles = ["Admin", "Chef", "Customer"];
-
             foreach (var role in roles)
             {
                 if (!await _roleManager.RoleExistsAsync(role))
@@ -34,8 +33,6 @@ namespace Persistence.Data
                     await _roleManager.CreateAsync(new IdentityRole(role));
                 }
             }
-
-           
         }
     }
 }

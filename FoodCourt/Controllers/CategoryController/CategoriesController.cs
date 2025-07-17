@@ -1,10 +1,9 @@
-﻿
-using Domain.Dtos;
+﻿using Domain.Dtos.CategoryDto;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Persistence.Data; // <-- your DbContext namespace
+using Persistence.Data;
 
-namespace WebApi.Controllers
+namespace FoodCourt.Controllers.CategoryController
 {
     [ApiController]
     [Route("api/[controller]")]

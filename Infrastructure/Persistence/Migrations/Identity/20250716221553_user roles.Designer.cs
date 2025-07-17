@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.Data;
 
@@ -11,9 +12,11 @@ using Persistence.Data;
 namespace Persistence.Migrations.Identity
 {
     [DbContext(typeof(IdentityContext))]
-    partial class IdentityContextModelSnapshot : ModelSnapshot
+    [Migration("20250716221553_user roles")]
+    partial class userroles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -275,7 +278,7 @@ namespace Persistence.Migrations.Identity
             modelBuilder.Entity("Domain.Entities.Identity.Address", b =>
                 {
                     b.HasOne("Domain.Entities.Identity.User", "User")
-                        .WithOne("Address")
+                        .WithOne("Adress")
                         .HasForeignKey("Domain.Entities.Identity.Address", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -336,7 +339,7 @@ namespace Persistence.Migrations.Identity
 
             modelBuilder.Entity("Domain.Entities.Identity.User", b =>
                 {
-                    b.Navigation("Address")
+                    b.Navigation("Adress")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

@@ -13,9 +13,9 @@ namespace Persistence.Data.Configurations
         public void Configure(EntityTypeBuilder<Restaurant> builder)
         {
             builder
-                .HasOne(r => r.Chef)
-                .WithOne(u => u.Restaurant)
-                .HasForeignKey<Restaurant>(r => r.ChefId)
+                .HasOne(r => r.Chef)              // Restaurant.Chef → navigation to User
+                .WithMany()                       // No navigation in User back to Restaurant
+                .HasForeignKey(r => r.ChefId)     // Use Restaurant.ChefId as FK
                 .OnDelete(DeleteBehavior.Cascade);
 
         }

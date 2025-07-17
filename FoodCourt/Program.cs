@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Persistence.Data;
 using Services.Abstractions.ICategoryService;
 using Services.CategoryService;
+using static System.Net.WebRequestMethods;
 
 namespace FoodCourt
 {
@@ -50,8 +51,14 @@ namespace FoodCourt
                 await dbInitializer.InitializerIdentityAsync();
             }
 
-            // Configure the HTTP request pipeline.
-            app.UseSwagger();
+
+            //Configure the HTTP request pipeline
+           if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+           
+            }
+      
             app.UseSwaggerUI();
             app.UseHttpsRedirection();
             app.UseAuthentication();

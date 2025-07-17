@@ -10,7 +10,7 @@ namespace Domain.Entities.Identity
     public class User:IdentityUser
     {
        public string DisplayName {  get; set; }
-        public Address Adress { get; set; }
+        public Address Address { get; set; }
 
 
         // For Chefs

@@ -1,9 +1,14 @@
 ﻿
+using System.Text;
 using Application.Contracts;
 using Application.Services;
 using Domain.Contracts;
 using Domain.Entities;
+using Domain.Entities.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Persistence.Data;
 
 namespace FoodCourt
@@ -35,6 +40,34 @@ namespace FoodCourt
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped<ICategoryService, CategoryService>();
 
+            // Identity Services
+            builder.Services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<IdentityContext>()
+                .AddDefaultTokenProviders();
+
+            // JWT Authentication
+            builder.Services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(op =>
+                {
+                    op.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                        ValidAudience = builder.Configuration["Jwt:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey
+                        (
+                            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:key"])
+                            )
+                    };
+                });
+
 
             var app = builder.Build();
 
@@ -50,6 +83,7 @@ namespace FoodCourt
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.MapGet("/", () => "✅ FoodCourt API — VERSION 1.2 ✅");
             app.MapControllers();

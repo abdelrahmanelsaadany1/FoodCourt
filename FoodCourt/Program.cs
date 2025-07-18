@@ -1,24 +1,16 @@
-<<<<<<< HEAD
-﻿
 using System.Text;
-using Application.Contracts;
-using Application.Services;
 using Domain.Contracts;
 using Domain.Entities;
 using Domain.Entities.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-=======
-﻿using Domain.Contracts;
-using Domain.Entities;
-using Domain.Entities.Identity;
->>>>>>> origin/main
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Persistence.Data;
 using Services.Abstractions.ICategoryService;
+using Services.Auth;
 using Services.CategoryService;
-using static System.Net.WebRequestMethods;
+
 
 namespace FoodCourt
 {
@@ -26,6 +18,8 @@ namespace FoodCourt
     {
         public static async Task Main(string[] args)
         {
+            // Allow CORS -- 1
+            string txt = "";
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
@@ -52,22 +46,21 @@ namespace FoodCourt
             // Add your services
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped<ICategoryService, CategoryService>();
-<<<<<<< HEAD
+            builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+            // JWT
+            builder.Services.AddScoped<JwtService>();
+            // Email Service
+            builder.Services.AddScoped<EmailService>();
 
-            // Identity Services
-            builder.Services.AddIdentity<User, IdentityRole>()
-                .AddEntityFrameworkStores<IdentityContext>()
-                .AddDefaultTokenProviders();
-
-            // JWT Authentication
+            // Authentication
             builder.Services.AddAuthentication(opt =>
             {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-                .AddJwtBearer(op =>
+                .AddJwtBearer(opt =>
                 {
-                    op.TokenValidationParameters = new TokenValidationParameters
+                    opt.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
                         ValidateAudience = true,
@@ -75,16 +68,36 @@ namespace FoodCourt
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = builder.Configuration["Jwt:Issuer"],
                         ValidAudience = builder.Configuration["Jwt:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey
-                        (
-                            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:key"])
-                            )
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
                     };
                 });
+            // Facebook and google
+            builder.Services.AddAuthentication()
+                .AddGoogle(options =>
+                {
+                    options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+                    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+                });
+            //.AddFacebook(options =>
+            //{
+            //    options.AppId = builder.Configuration["Authentication:Facebook:AppId"];
+            //    options.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
+            //});
 
-=======
-            builder.Services.AddScoped<IDbInitializer, DbInitializer>();
->>>>>>> origin/main
+            // Allow CORS --2
+            builder.Services.AddCors(opt =>
+            {
+                opt.AddPolicy(txt,
+                    builder =>
+                    {
+                        //builder.AllowAnyOrigin();
+                        // aw3a t3mel kda https://localhost:7129/ msh hyshta5l
+                        builder.WithOrigins("http://localhost:4200", "https://akelny-front.vercel.app"); // a3mal comma we adef tany
+                        //builder.WithMethods("Post", "get");
+                        builder.AllowAnyMethod();
+                        builder.AllowAnyHeader();
+                    });
+            });
 
             var app = builder.Build();
 
@@ -97,19 +110,21 @@ namespace FoodCourt
 
 
             //Configure the HTTP request pipeline
-           if (app.Environment.IsDevelopment())
+            if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-           
+
             }
-      
+
             app.UseSwaggerUI();
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseAuthentication();
 
-            app.MapGet("/", () => "✅ FoodCourt API — VERSION 1.4 ✅");
+            // Allow CORS -- 3
+            app.UseCors(txt);
+
+            app.MapGet("/", () => "✅ FoodCourt API — VERSION 1.5 ✅");
             app.MapControllers();
 
             app.Run();

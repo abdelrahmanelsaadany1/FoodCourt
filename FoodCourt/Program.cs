@@ -19,7 +19,7 @@ namespace FoodCourt
         public static async Task Main(string[] args)
         {
             // Allow CORS -- 1
-            string txt = "";
+            string txt = "AllowSpecificOrigins";
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
@@ -85,17 +85,29 @@ namespace FoodCourt
             //});
 
             // Allow CORS --2
+            //builder.Services.AddCors(opt =>
+            //{
+            //    opt.AddPolicy(txt,
+            //        builder =>
+            //        {
+            //            //builder.AllowAnyOrigin();
+            //            // aw3a t3mel kda https://localhost:7129/ msh hyshta5l
+            //            builder.WithOrigins("http://localhost:4200", "https://akelny-front.vercel.app"); // a3mal comma we adef tany
+            //            //builder.WithMethods("Post", "get");
+            //            builder.AllowAnyMethod();
+            //            builder.AllowAnyHeader();
+            //        });
+            //});
+            // Later in your CORS configuration:
             builder.Services.AddCors(opt =>
             {
                 opt.AddPolicy(txt,
                     builder =>
                     {
-                        //builder.AllowAnyOrigin();
-                        // aw3a t3mel kda https://localhost:7129/ msh hyshta5l
-                        builder.WithOrigins("http://localhost:4200", "https://akelny-front.vercel.app"); // a3mal comma we adef tany
-                        //builder.WithMethods("Post", "get");
+                        builder.WithOrigins("http://localhost:4200", "https://akelny-front.vercel.app");
                         builder.AllowAnyMethod();
                         builder.AllowAnyHeader();
+                        builder.AllowCredentials(); // Add this if you're using authentication
                     });
             });
 
@@ -124,7 +136,7 @@ namespace FoodCourt
             // Allow CORS -- 3
             app.UseCors(txt);
 
-            app.MapGet("/", () => "✅ FoodCourt API — VERSION 1.6 ✅");
+            app.MapGet("/", () => "✅ FoodCourt API — VERSION 1.7 ✅");
             app.MapControllers();
 
             app.Run();

@@ -35,20 +35,91 @@ namespace FoodCourt.Controllers.Account
             _configuration = configuration;
         }
 
+        //[HttpPost("register")]
+        //public async Task<IActionResult> Register(RegisterDto dto)
+        //{
+        //    var user = new User { Email = dto.Email, UserName = dto.Email, DisplayName = dto.Role };
+
+        //    var result = await _userManager.CreateAsync(user, dto.Password);
+        //    if (!result.Succeeded)
+        //        return BadRequest(result.Errors);
+
+        //    await _userManager.AddToRoleAsync(user, dto.Role);
+        //    var roles = await _userManager.GetRolesAsync(user);
+        //    var token = _jwtService.GenerateToken(user, roles);
+
+        //    return Ok(new { token });
+        //}
+
+        //[HttpPost("register")]
+        //public async Task<IActionResult> Register(RegisterDto dto)
+        //{
+        //    try
+        //    {
+        //        // Add logging
+        //        Console.WriteLine($"Registration attempt for: {dto.Email}");
+
+        //        var user = new User { Email = dto.Email, UserName = dto.Email, DisplayName = dto.Role };
+
+        //        var result = await _userManager.CreateAsync(user, dto.Password);
+        //        if (!result.Succeeded)
+        //        {
+        //            Console.WriteLine($"User creation failed: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+        //            return BadRequest(result.Errors);
+        //        }
+
+        //        await _userManager.AddToRoleAsync(user, dto.Role);
+        //        var roles = await _userManager.GetRolesAsync(user);
+        //        var token = _jwtService.GenerateToken(user, roles);
+
+        //        return Ok(new { token });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"Registration error: {ex.Message}");
+        //        return StatusCode(500, new { message = "Internal server error", details = ex.Message });
+        //    }
+        //}
+        [HttpGet("test")]
+        public IActionResult Test()
+        {
+            return Ok(new { message = "AuthController is working!", timestamp = DateTime.UtcNow });
+        }
+
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto dto)
         {
-            var user = new User { Email = dto.Email, UserName = dto.Email, DisplayName = dto.Role };
+            try
+            {
+                // Add model validation
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
 
-            var result = await _userManager.CreateAsync(user, dto.Password);
-            if (!result.Succeeded)
-                return BadRequest(result.Errors);
+                // Add logging
+                Console.WriteLine($"Registration attempt for: {dto.Email}");
 
-            await _userManager.AddToRoleAsync(user, dto.Role);
-            var roles = await _userManager.GetRolesAsync(user);
-            var token = _jwtService.GenerateToken(user, roles);
+                var user = new User { Email = dto.Email, UserName = dto.Email, DisplayName = dto.Role };
 
-            return Ok(new { token });
+                var result = await _userManager.CreateAsync(user, dto.Password);
+                if (!result.Succeeded)
+                {
+                    Console.WriteLine($"User creation failed: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+                    return BadRequest(new { errors = result.Errors.Select(e => e.Description) });
+                }
+
+                await _userManager.AddToRoleAsync(user, dto.Role);
+                var roles = await _userManager.GetRolesAsync(user);
+                var token = _jwtService.GenerateToken(user, roles);
+
+                return Ok(new { token, message = "Registration successful" });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Registration error: {ex.Message}");
+                return StatusCode(500, new { message = "Internal server error", details = ex.Message });
+            }
         }
 
         [HttpPost("login")]
@@ -258,6 +329,8 @@ namespace FoodCourt.Controllers.Account
 
             return Ok();
         }
+
+
     }
 
 }

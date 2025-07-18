@@ -1,6 +1,22 @@
-@FoodCourt_HostAddress = http://localhost:5089
+@FoodCourt_HostAddress = http://localhost:7045
 
 GET {{FoodCourt_HostAddress}}/weatherforecast/
 Accept: application/json
+
+###
+
+GET {{FoodCourt_HostAddress}}/api/Auth/test
+Accept: application/json
+
+###
+
+POST {{FoodCourt_HostAddress}}/api/Auth/register
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "Test123!",
+  "role": "Customer"
+}
 
 ###

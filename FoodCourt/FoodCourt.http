@@ -1,4 +1,5 @@
-@FoodCourt_HostAddress = http://localhost:5089
+
+@FoodCourt_HostAddress = http://localhost:7045
 
 GET {{FoodCourt_HostAddress}}/weatherforecast/
 Accept: application/json

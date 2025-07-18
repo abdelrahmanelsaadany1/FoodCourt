@@ -361,3 +361,14 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# .NET build artifacts
+bin/
+obj/
+*.user
+*.suo
+*.log
+
+# Ignore appsettings files
+appsettings.json
+appsettings.Development.json

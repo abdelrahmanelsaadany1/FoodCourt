@@ -307,6 +307,17 @@ namespace FoodCourt.Controllers.Account
             }
         }
 
+        //[HttpPost("forgot-password")]
+        //public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto dto)
+        //{
+        //    var user = await _userManager.FindByEmailAsync(dto.Email);
+        //    if (user == null) return Ok();
+
+        //    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        //    await _emailService.SendResetLink(user.Email, token);
+        //    return Ok();
+        //}
+
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto dto)
         {
@@ -314,7 +325,10 @@ namespace FoodCourt.Controllers.Account
             if (user == null) return Ok();
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            await _emailService.SendResetLink(user.Email, token);
+            if (user.Email != null)
+            {
+                await _emailService.SendResetLink(user.Email, token);
+            }
             return Ok();
         }
 

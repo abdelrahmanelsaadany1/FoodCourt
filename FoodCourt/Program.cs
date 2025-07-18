@@ -124,7 +124,7 @@ namespace FoodCourt
             // Allow CORS -- 3
             app.UseCors(txt);
 
-            app.MapGet("/", () => "✅ FoodCourt API — VERSION 1.5 ✅");
+            app.MapGet("/", () => "✅ FoodCourt API — VERSION 1.6 ✅");
             app.MapControllers();
 
             app.Run();

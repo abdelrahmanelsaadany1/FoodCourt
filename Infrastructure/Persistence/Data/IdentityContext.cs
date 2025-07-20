@@ -19,10 +19,6 @@ namespace Persistence.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            // Fix: Configure Address to use the existing migration table name
-            builder.Entity<Address>().ToTable("Addresses"); // This will be the correct name after migration
-
             builder.Entity<User>()
                 .HasOne(u => u.Address)
                 .WithOne(a => a.User)

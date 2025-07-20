@@ -336,7 +336,8 @@ namespace Persistence.Migrations.Identity
 
             modelBuilder.Entity("Domain.Entities.Identity.User", b =>
                 {
-                    b.Navigation("Address");
+                    b.Navigation("Address")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

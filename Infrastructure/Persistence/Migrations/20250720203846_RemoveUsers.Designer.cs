@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.Data;
 
@@ -11,9 +12,11 @@ using Persistence.Data;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(FoodCourtDbContext))]
-    partial class FoodCourtDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250720203846_RemoveUsers")]
+    partial class RemoveUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -328,20 +331,6 @@ namespace Persistence.Migrations
                     b.ToTable("Restaurants");
                 });
 
-<<<<<<< Updated upstream
-            modelBuilder.Entity("Domain.Entities.Identity.Address", b =>
-                {
-                    b.HasOne("Domain.Entities.Identity.User", "User")
-                        .WithOne("Adress")
-                        .HasForeignKey("Domain.Entities.Identity.Address", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-=======
->>>>>>> Stashed changes
             modelBuilder.Entity("Domain.Entities.Item", b =>
                 {
                     b.HasOne("Domain.Entities.Category", "Category")
@@ -497,15 +486,6 @@ namespace Persistence.Migrations
                     b.Navigation("OrderItemCombos");
                 });
 
-<<<<<<< Updated upstream
-            modelBuilder.Entity("Domain.Entities.Identity.User", b =>
-                {
-                    b.Navigation("Adress")
-                        .IsRequired();
-                });
-
-=======
->>>>>>> Stashed changes
             modelBuilder.Entity("Domain.Entities.Item", b =>
                 {
                     b.Navigation("ItemAddOns");

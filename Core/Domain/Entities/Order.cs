@@ -21,13 +21,13 @@ namespace Domain.Entities
         
 
         public string CustomerId { get; set; }
-        public virtual User Customer { get; set; }
+        //public virtual User? Customer { get; set; }
 
         public int RestaurantId { get; set; }
-        public virtual Restaurant Restaurant { get; set; }
+        public virtual Restaurant? Restaurant { get; set; }
 
-        public virtual ICollection<OrderItem> Items { get; set; }
-        public virtual Payment Payment { get; set; }
+        public virtual ICollection<OrderItem?> Items { get; set; }
+        public virtual Payment? Payment { get; set; }
 
     }
 }

@@ -12,9 +12,8 @@ namespace Domain.Entities
      
         public string Name { get; set; }
 
-        [JsonIgnore]
-
-        public virtual ICollection<Item> Items { get; set; }
+      
+        public virtual ICollection<Item?> Items { get; set; }
     }
 }
  

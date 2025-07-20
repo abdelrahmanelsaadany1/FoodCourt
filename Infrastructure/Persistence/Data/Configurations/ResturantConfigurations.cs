@@ -1,23 +1,17 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Persistence.Data.Configurations
+public class RestaurantConfigurations : IEntityTypeConfiguration<Restaurant>
 {
-    public class ResturantConfigurations : IEntityTypeConfiguration<Restaurant>
+    public void Configure(EntityTypeBuilder<Restaurant> builder)
     {
-        public void Configure(EntityTypeBuilder<Restaurant> builder)
-        {
-            builder
-                .HasOne(r => r.Chef)              // Restaurant.Chef → navigation to User
-                .WithMany()                       // No navigation in User back to Restaurant
-                .HasForeignKey(r => r.ChefId)     // Use Restaurant.ChefId as FK
-                .OnDelete(DeleteBehavior.Cascade);
+        builder.Property(r => r.ChefId)
+               .IsRequired();
 
-        }
+        builder.Property(r => r.Name)
+               .HasMaxLength(100)
+               .IsRequired();
+
+        // Optional: you can configure indexes or other fields if needed
     }
 }

@@ -1,4 +1,10 @@
+<<<<<<< Updated upstream
 ﻿using Domain.Contracts;
+=======
+
+using System.Text;
+using Domain.Contracts;
+>>>>>>> Stashed changes
 using Domain.Entities;
 using Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
@@ -20,7 +26,7 @@ namespace FoodCourt
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
+            builder.Services.AddHttpContextAccessor();
             // Add DbContexts
             builder.Services.AddDbContext<FoodCourtDbContext>((optionsbuilder =>
             {
@@ -41,6 +47,57 @@ namespace FoodCourt
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+<<<<<<< Updated upstream
+=======
+            builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<IResturantService,ResturantService>();
+            // JWT
+            builder.Services.AddScoped<JwtService>();
+            // Email Service
+            builder.Services.AddScoped<EmailService>();
+
+
+            // Authentication
+            builder.Services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(opt =>
+                {
+                    opt.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                        ValidAudience = builder.Configuration["Jwt:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key not found in configuration")))
+                    };
+                });
+
+            // Facebook and google
+            builder.Services.AddAuthentication()
+                .AddGoogle(options =>
+                {
+                    options.ClientId = builder.Configuration["Authentication:Google:ClientId"] ?? "";
+                    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"] ?? "";
+                });
+
+            // Allow CORS --2
+            builder.Services.AddCors(opt =>
+            {
+                opt.AddPolicy(corsPolicyName,
+                    policy =>
+                    {
+                        policy.WithOrigins("http://localhost:4200", "https://akelny-front.vercel.app");
+                        policy.AllowAnyMethod();
+                        policy.AllowAnyHeader();
+                        policy.AllowCredentials();
+                    });
+            });
+>>>>>>> Stashed changes
 
             var app = builder.Build();
 
